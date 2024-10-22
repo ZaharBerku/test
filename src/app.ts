@@ -1,6 +1,4 @@
 import { Telegraf } from "telegraf";
-import { IConfigService } from "./config/config.interface";
-import { ConfigService } from "./config/config.service";
 import { IBotContext } from "./context/context.interface";
 import { Command } from "./commands/command.class";
 import { StartCommand } from "./commands/start.command";
@@ -15,8 +13,8 @@ import { MessageCommand } from "./commands/message.command";
 class Bot {
   bot: Telegraf<IBotContext>;
   commands: Command[] = [];
-  constructor(private readonly configService: IConfigService) {
-    this.bot = new Telegraf<IBotContext>(this.configService.get("TOKEN"));
+  constructor() {
+    this.bot = new Telegraf<IBotContext>(process.env.TOKEN as string);
     // this.bot.use(new LocalSession({ database: "sessions.json" }).middleware());
   }
 
@@ -30,7 +28,6 @@ class Bot {
       new SendingMessage(this.bot),
       new MessageCommand(this.bot),
     ];
-    console.log(this.bot, this.configService.get("TOKEN"));
     for (const command of this.commands) {
       command.handle();
     }
@@ -38,5 +35,5 @@ class Bot {
   }
 }
 
-const bot = new Bot(new ConfigService());
+const bot = new Bot();
 bot.init();

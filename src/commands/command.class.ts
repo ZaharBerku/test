@@ -1,4 +1,3 @@
-import { ConfigService } from "./../config/config.service";
 import { Context, NarrowedContext, Telegraf } from "telegraf";
 import { IBotContext } from "../context/context.interface";
 import { Update, Message } from "telegraf/typings/core/types/typegram";
@@ -17,8 +16,8 @@ export abstract class Command {
   allowedUsers: string;
 
   constructor(public bot: Telegraf<IBotContext>) {
-    this.allowedChatId = new ConfigService().get("ALLOWED_CHAT_ID");
-    this.allowedUsers = new ConfigService().get("ALLOWED_USERS");
+    this.allowedChatId = process.env.ALLOWED_CHAT_ID as string;
+    this.allowedUsers = process.env.ALLOWED_USERS as string;
   }
 
   abstract handle(): void;
