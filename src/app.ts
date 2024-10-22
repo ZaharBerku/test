@@ -18,15 +18,6 @@ class Bot {
   constructor(private readonly configService: IConfigService) {
     this.bot = new Telegraf<IBotContext>(this.configService.get("TOKEN"));
     // this.bot.use(new LocalSession({ database: "sessions.json" }).middleware());
-    this.bot.use((ctx, next) => {
-      if (!ctx.session.coursLike) {
-        ctx.session.coursLike = false;
-      }
-      if (!ctx.session.groupChats) {
-        ctx.session.groupChats = new Set<number>();
-      }
-      return next();
-    });
   }
 
   init() {
