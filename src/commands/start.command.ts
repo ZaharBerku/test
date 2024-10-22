@@ -10,6 +10,7 @@ export class StartCommand extends Command {
 
   handle(): void {
     this.bot.start(async (ctx) => {
+      console.log(ctx, "ctx");
       if (!this.isAllowedChatId(ctx)) {
         const { id, type, title } = ctx.update.message.chat as {
           title: string;

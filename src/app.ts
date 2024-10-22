@@ -28,8 +28,9 @@ class Bot {
       new Groups(this.bot),
       new Help(this.bot),
       new SendingMessage(this.bot),
-      new MessageCommand(this.bot)
+      new MessageCommand(this.bot),
     ];
+    console.log(this.bot, this.configService.get("TOKEN"));
     for (const command of this.commands) {
       command.handle();
     }
