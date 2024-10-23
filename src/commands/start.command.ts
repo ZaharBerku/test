@@ -36,7 +36,11 @@ export class StartCommand extends Command {
             } else {
               message = this.getMeesage({ chatId: id });
             }
-            if (message) {
+            const { data } = await supabase
+              .from("groups")
+              .select("*")
+              .eq("group_id", id);
+            if (message && !data?.at(0)) {
               const sentMessage = await ctx.telegram.sendMessage(id, message, {
                 parse_mode: "HTML",
               });
@@ -57,7 +61,11 @@ export class StartCommand extends Command {
                 }
               }
             } else {
-              ctx.reply("Что-то пошло не так!");
+              if (!data?.at(0)) {
+                ctx.reply("Что-то пошло не так!");
+              } else {
+                ctx.reply("Такая группа уже была добалена");
+              }
             }
           } else {
             ctx.reply("Необходимо сделать бота админом группы");
